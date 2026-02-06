@@ -42,7 +42,7 @@ func (stmt *WidthRatioStmt) Execute(r *exec.Renderer, tag *nodes.StatementBlock)
 	value := int(math.Ceil(current.Float()/max.Float()*width.Float() + 0.5))
 
 	if stmt.ctxName == "" {
-		r.WriteString(fmt.Sprintf("%d", value))
+		_, _ = r.WriteString(fmt.Sprintf("%d", value))
 	} else {
 		r.Ctx.Set(stmt.ctxName, value)
 	}
@@ -90,5 +90,5 @@ func widthratioParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, e
 }
 
 func init() {
-	All.Register("widthratio", widthratioParser)
+	_ = All.Register("widthratio", widthratioParser)
 }

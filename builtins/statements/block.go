@@ -69,7 +69,7 @@ func (bi *BlockInfos) super() string {
 	}
 	sub.Ctx.Set("self", exec.Self(sub))
 	sub.Ctx.Set("super", infos.super)
-	sub.ExecuteWrapper(block)
+	_ = sub.ExecuteWrapper(block)
 	return out.String()
 }
 
@@ -97,7 +97,7 @@ func blockParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, error)
 	if !endargs.End() {
 		endName := endargs.Match(tokens.Name)
 		if endName != nil {
-			if endName.Val != endName.Val {
+			if endName.Val != name.Val {
 				return nil, errors.Errorf(`Name for 'endblock' must equal to 'block'-tag's name ('%s' != '%s').`,
 					name.Val, endName.Val)
 			}
@@ -109,7 +109,7 @@ func blockParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, error)
 	}
 
 	if !p.Template.Blocks.Exists(name.Val) {
-		p.Template.Blocks.Register(name.Val, wrapper)
+		_ = p.Template.Blocks.Register(name.Val, wrapper)
 	} else {
 		return nil, args.Error(fmt.Sprintf("Block named '%s' already defined", name.Val), nil)
 	}
@@ -119,5 +119,5 @@ func blockParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, error)
 }
 
 func init() {
-	All.Register("block", blockParser)
+	_ = All.Register("block", blockParser)
 }

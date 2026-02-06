@@ -14,7 +14,7 @@ var compareOps = []tokens.Type{
 }
 
 func BinOp(token *tokens.Token) *nodes.BinOperator {
-	return &nodes.BinOperator{token}
+	return &nodes.BinOperator{Token: token}
 }
 
 // type negation struct {

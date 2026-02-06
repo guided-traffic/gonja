@@ -32,8 +32,6 @@ func (p *Parser) ParseTest(expr nodes.Expression) (nodes.Expression, error) {
 			test.Args = append(test.Args, arg)
 		}
 
-		
-
 		// // Check for test-argument (2 tokens needed: ':' ARG)
 		// if p.Match(tokens.Lparen) != nil {
 		// 	if p.Peek(tokens.VariableEnd) != nil {
@@ -71,7 +69,7 @@ func (p *Parser) ParseTest(expr nodes.Expression) (nodes.Expression, error) {
 		}
 
 		if not != nil {
-			expr = &nodes.Negation{expr, not}
+			expr = &nodes.Negation{Term: expr, Operator: not}
 		}
 	}
 

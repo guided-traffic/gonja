@@ -43,7 +43,7 @@ func (stmt *SpacelessStmt) Execute(r *exec.Renderer, tag *nodes.StatementBlock) 
 		s = s2
 	}
 
-	r.WriteString(s)
+	_, _ = r.WriteString(s)
 
 	return nil
 }
@@ -67,5 +67,5 @@ func spacelessParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, er
 }
 
 func init() {
-	All.Register("spaceless", spacelessParser)
+	_ = All.Register("spaceless", spacelessParser)
 }

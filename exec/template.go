@@ -64,7 +64,7 @@ func (tpl *Template) execute(ctx map[string]interface{}, out io.StringWriter) er
 	if err != nil {
 		return errors.Wrap(err, `Unable to Execute template`)
 	}
-	out.WriteString(renderer.String())
+	_, _ = out.WriteString(renderer.String())
 
 	return nil
 }

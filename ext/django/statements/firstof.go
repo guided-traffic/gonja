@@ -54,5 +54,5 @@ func firstofParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, erro
 }
 
 func init() {
-	All.Register("firstof", firstofParser)
+	_ = All.Register("firstof", firstofParser)
 }

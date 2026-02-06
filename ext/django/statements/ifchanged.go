@@ -41,7 +41,7 @@ func (stmt *IfChangedStmt) Execute(r *exec.Renderer, tag *nodes.StatementBlock) 
 		str := out.String()
 		if stmt.lastContent != str {
 			// Rendered content changed, output it
-			r.WriteString(str)
+			_, _ = r.WriteString(str)
 			stmt.lastContent = str
 		}
 	} else {
@@ -130,5 +130,5 @@ func ifchangedParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, er
 }
 
 func init() {
-	All.Register("ifchanged", ifchangedParser)
+	_ = All.Register("ifchanged", ifchangedParser)
 }

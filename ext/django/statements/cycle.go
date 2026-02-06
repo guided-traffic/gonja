@@ -57,7 +57,7 @@ func (stmt *CycleStatement) Execute(r *exec.Renderer, tag *nodes.StatementBlock)
 		t.value = val
 
 		if !t.node.silent {
-			r.WriteString(val.String())
+			_, _ = r.WriteString(val.String())
 		}
 	} else {
 		// Regular call
@@ -71,7 +71,7 @@ func (stmt *CycleStatement) Execute(r *exec.Renderer, tag *nodes.StatementBlock)
 			r.Ctx.Set(stmt.asName, cycleValue)
 		}
 		if !stmt.silent {
-			r.WriteString(val.String())
+			_, _ = r.WriteString(val.String())
 		}
 	}
 
@@ -117,5 +117,5 @@ func cycleParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, error)
 }
 
 func init() {
-	All.Register("cycle", cycleParser)
+	_ = All.Register("cycle", cycleParser)
 }

@@ -61,9 +61,8 @@ func (f Inspector) Visit(node Node) (Visitor, error) {
 // f(node); node must not be nil. If f returns true, Inspect invokes f
 // recursively for each of the non-nil children of node, followed by a
 // call of f(nil).
-//
 func Inspect(node Node, f func(Node) bool) {
-	Walk(Inspector(f), node)
+	_ = Walk(Inspector(f), node)
 }
 
 // type NoOpVisitor struct {}
