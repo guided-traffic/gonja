@@ -1,6 +1,6 @@
 module github.com/noirbizarre/gonja
 
-go 1.24.0
+go 1.25.7
 
 require (
 	github.com/bmuller/arrow v0.0.0-20180318014521-b14bfde8dff2
