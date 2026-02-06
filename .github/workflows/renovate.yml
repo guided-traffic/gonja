@@ -40,4 +40,5 @@ jobs:
         env:
           LOG_LEVEL: ${{ inputs.logLevel || 'info' }}
           RENOVATE_AUTODISCOVER: 'false'
+          RENOVATE_REPOSITORIES: '["guided-traffic/gonja"]'
           RENOVATE_REQUIRE_CONFIG: 'required'
