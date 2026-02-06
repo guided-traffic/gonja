@@ -2,9 +2,7 @@ package statements
 
 import (
 	"fmt"
-	"math/rand"
 	"strings"
-	"time"
 
 	// "github.com/pkg/errors"
 
@@ -74,8 +72,6 @@ func loremParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, error)
 }
 
 func init() {
-	rand.Seed(time.Now().Unix())
-
 	All.Register("lorem", loremParser)
 }
 

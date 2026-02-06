@@ -1,7 +1,7 @@
 package gonja
 
 import (
-	"io/ioutil"
+	"io"
 	"sync"
 
 	"github.com/goph/emperror"
@@ -99,7 +99,7 @@ func (env *Environment) FromFile(filename string) (*exec.Template, error) {
 	if err != nil {
 		return nil, emperror.With(err, "filename", filename)
 	}
-	buf, err := ioutil.ReadAll(fd)
+	buf, err := io.ReadAll(fd)
 	if err != nil {
 		return nil, emperror.With(err, "filename", filename)
 	}

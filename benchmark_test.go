@@ -3,7 +3,7 @@
 package gonja_test
 
 import (
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/noirbizarre/gonja"
@@ -52,7 +52,7 @@ func BenchmarkExecute(b *testing.B) {
 }
 
 func BenchmarkCompileAndExecute(b *testing.B) {
-	buf, err := ioutil.ReadFile("testData/complex.tpl")
+	buf, err := os.ReadFile("testData/complex.tpl")
 	if err != nil {
 		b.Fatal(err)
 	}

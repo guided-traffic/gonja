@@ -146,10 +146,25 @@ func testSameas(ctx *exec.Context, in *exec.Value, params *exec.VarArgs) (bool, 
 	param := params.Args[0]
 	if in.IsNil() && param.IsNil() {
 		return true, nil
-	} else if param.Val.CanAddr() && in.Val.CanAddr() {
-		return param.Val.Addr() == in.Val.Addr(), nil
 	}
-	return reflect.Indirect(param.Val) == reflect.Indirect(in.Val), nil
+	if in.IsNil() || param.IsNil() {
+		return false, nil
+	}
+	inVal := reflect.Indirect(in.Val)
+	paramVal := reflect.Indirect(param.Val)
+	// For reference types, compare pointer identity
+	switch inVal.Kind() {
+	case reflect.Map, reflect.Slice, reflect.Chan, reflect.Func, reflect.Ptr, reflect.UnsafePointer:
+		if paramVal.Kind() == inVal.Kind() {
+			return inVal.Pointer() == paramVal.Pointer(), nil
+		}
+		return false, nil
+	}
+	// For value types, check if both values are addressable and at the same address
+	if inVal.CanAddr() && paramVal.CanAddr() {
+		return inVal.Addr().Pointer() == paramVal.Addr().Pointer(), nil
+	}
+	return false, nil
 }
 
 func testString(ctx *exec.Context, in *exec.Value, params *exec.VarArgs) (bool, error) {

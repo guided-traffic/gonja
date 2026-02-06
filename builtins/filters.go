@@ -9,7 +9,6 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-	"time"
 	"unicode"
 	"unicode/utf8"
 
@@ -19,9 +18,7 @@ import (
 	u "github.com/noirbizarre/gonja/utils"
 )
 
-func init() {
-	rand.Seed(time.Now().Unix())
-}
+// rand is automatically seeded in Go 1.20+
 
 // Filters export all builtin filters
 var Filters = exec.FilterSet{
@@ -960,6 +957,20 @@ func filterSum(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Va
 	return exec.AsValue(sum)
 }
 
+// titleCase converts a string to title case (first letter of each word uppercased).
+// This replaces the deprecated strings.Title.
+func titleCase(s string) string {
+	prev := ' '
+	return strings.Map(func(r rune) rune {
+		if unicode.IsSpace(prev) || unicode.IsPunct(prev) {
+			prev = r
+			return unicode.ToTitle(r)
+		}
+		prev = r
+		return r
+	}, s)
+}
+
 func filterTitle(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
 	if p := params.ExpectNothing(); p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'title'"))
@@ -967,7 +978,7 @@ func filterTitle(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.
 	if !in.IsString() {
 		return exec.AsValue("")
 	}
-	return exec.AsValue(strings.Title(strings.ToLower(in.String())))
+	return exec.AsValue(titleCase(strings.ToLower(in.String())))
 }
 
 func filterTrim(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
