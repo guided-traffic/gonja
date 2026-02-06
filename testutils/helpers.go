@@ -53,7 +53,7 @@ func GlobTemplateTests(t *testing.T, root string, env *gonja.Environment) {
 				t.Fatalf("Error on FromFile('%s'):\n%s", filename, err.Error())
 			}
 			testFilename := fmt.Sprintf("%s.out", match)
-			expected, rerr := os.ReadFile(testFilename)
+			expected, rerr := os.ReadFile(filepath.Clean(testFilename))
 			if rerr != nil {
 				t.Fatalf("Error on ReadFile('%s'):\n%s", testFilename, rerr.Error())
 			}
@@ -94,14 +94,14 @@ func GlobErrorTests(t *testing.T, root string) {
 				}
 			}()
 
-			testData, err := os.ReadFile(match)
+			testData, err := os.ReadFile(filepath.Clean(match))
 			if err != nil {
 				t.Fatalf("Error on ReadFile('%s'):\n%s", match, err.Error())
 			}
 			tests := strings.Split(string(testData), "\n")
 
 			checkFilename := fmt.Sprintf("%s.out", match)
-			checkData, err := os.ReadFile(checkFilename)
+			checkData, err := os.ReadFile(filepath.Clean(checkFilename))
 			if err != nil {
 				t.Fatalf("Error on ReadFile('%s'):\n%s", checkFilename, err.Error())
 			}

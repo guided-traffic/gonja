@@ -74,7 +74,7 @@ func (fs *FilesystemLoader) Get(path string) (io.Reader, error) {
 	if err != nil {
 		return nil, err
 	}
-	buf, err := os.ReadFile(realPath)
+	buf, err := os.ReadFile(filepath.Clean(realPath))
 	if err != nil {
 		return nil, err
 	}

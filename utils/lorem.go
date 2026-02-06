@@ -89,7 +89,7 @@ func capitalize(s string) string {
 
 func Lipsum(n int, html bool, min int, max int) string {
 	// Use a fixed-seed source for deterministic output
-	lipsumRand := rand.New(rand.NewSource(0))
+	lipsumRand := rand.New(rand.NewSource(0)) // #nosec G404 -- deterministic output is intentional for template rendering
 	result := []string{}
 
 	for i := 0; i < n; i++ {

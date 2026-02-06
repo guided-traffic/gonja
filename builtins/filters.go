@@ -612,7 +612,7 @@ func filterRandom(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 	if !in.CanSlice() || in.Len() <= 0 {
 		return in
 	}
-	i := rand.Intn(in.Len())
+	i := rand.Intn(in.Len()) // #nosec G404 -- template random filter does not require cryptographic randomness
 	return in.Index(i)
 }
 
