@@ -24,7 +24,7 @@ func Self(r *Renderer) map[string]func() string {
 			sub := r.Inherit()
 			var out strings.Builder
 			sub.Out = &out
-			sub.ExecuteWrapper(block)
+			_ = sub.ExecuteWrapper(block)
 			return out.String()
 		}
 	}

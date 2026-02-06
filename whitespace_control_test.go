@@ -3,7 +3,7 @@ package gonja_test
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/noirbizarre/gonja"
@@ -49,7 +49,7 @@ func TestWhiteSpace(t *testing.T) {
 				t.Fatalf("Error on FromFile('%s'): %s", source, err.Error())
 			}
 			output := fmt.Sprintf(result, test.name)
-			expected, rerr := ioutil.ReadFile(output)
+			expected, rerr := os.ReadFile(output)
 			if rerr != nil {
 				t.Fatalf("Error on ReadFile('%s'): %s", output, rerr.Error())
 			}
@@ -58,7 +58,7 @@ func TestWhiteSpace(t *testing.T) {
 				t.Fatalf("Error on Execute('%s'): %s", source, err.Error())
 			}
 			// rendered = testTemplateFixes.fixIfNeeded(match, rendered)
-			if bytes.Compare(expected, rendered) != 0 {
+			if !bytes.Equal(expected, rendered) {
 				diff := difflib.UnifiedDiff{
 					A:        difflib.SplitLines(string(expected)),
 					B:        difflib.SplitLines(string(rendered)),

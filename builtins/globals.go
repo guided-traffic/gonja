@@ -106,7 +106,7 @@ func (j *joiner) String() string {
 }
 
 func Joiner(va *exec.VarArgs) *exec.Value {
-	p := va.ExpectKwArgs([]*exec.KwArg{{"sep", ","}})
+	p := va.ExpectKwArgs([]*exec.KwArg{{Name: "sep", Default: ","}})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrapf(p, `wrong signature for 'joiner'`))
 	}
@@ -127,10 +127,10 @@ func Namespace(va *exec.VarArgs) map[string]interface{} {
 
 func Lipsum(va *exec.VarArgs) *exec.Value {
 	p := va.ExpectKwArgs([]*exec.KwArg{
-		{"n", 5},
-		{"html", true},
-		{"min", 20},
-		{"max", 100},
+		{Name: "n", Default: 5},
+		{Name: "html", Default: true},
+		{Name: "min", Default: 20},
+		{Name: "max", Default: 100},
 	})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrapf(p, `wrong signature for 'lipsum'`))

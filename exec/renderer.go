@@ -104,9 +104,9 @@ func (r *Renderer) WriteString(txt string) (int, error) {
 // RenderValue properly render a value
 func (r *Renderer) RenderValue(value *Value) {
 	if r.Autoescape && value.IsString() && !value.Safe {
-		r.WriteString(value.Escaped())
+		_, _ = r.WriteString(value.Escaped())
 	} else {
-		r.WriteString(value.String())
+		_, _ = r.WriteString(value.String())
 	}
 }
 
@@ -138,7 +138,7 @@ func (r *Renderer) Visit(node nodes.Node) (nodes.Visitor, error) {
 		r.Tag(n.Trim, false)
 		return nil, nil
 	case *nodes.Data:
-		r.WriteString(n.Data.Val)
+		_, _ = r.WriteString(n.Data.Val)
 		return nil, nil
 	case *nodes.Output:
 		r.StartTag(n.Trim, false)

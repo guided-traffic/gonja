@@ -3,8 +3,7 @@ package testutils
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
-	"math/rand"
+	"os"
 	"path"
 	"path/filepath"
 	"regexp"
@@ -49,14 +48,12 @@ func GlobTemplateTests(t *testing.T, root string, env *gonja.Environment) {
 				}
 			}()
 
-			rand.Seed(42) // Make tests deterministics
-
 			tpl, err := env.FromFile(filename)
 			if err != nil {
 				t.Fatalf("Error on FromFile('%s'):\n%s", filename, err.Error())
 			}
 			testFilename := fmt.Sprintf("%s.out", match)
-			expected, rerr := ioutil.ReadFile(testFilename)
+			expected, rerr := os.ReadFile(filepath.Clean(testFilename))
 			if rerr != nil {
 				t.Fatalf("Error on ReadFile('%s'):\n%s", testFilename, rerr.Error())
 			}
@@ -65,7 +62,7 @@ func GlobTemplateTests(t *testing.T, root string, env *gonja.Environment) {
 				t.Fatalf("Error on Execute('%s'):\n%s", filename, err.Error())
 			}
 			// rendered = testTemplateFixes.fixIfNeeded(filename, rendered)
-			if bytes.Compare(expected, rendered) != 0 {
+			if !bytes.Equal(expected, rendered) {
 				diff := difflib.UnifiedDiff{
 					A:        difflib.SplitLines(string(expected)),
 					B:        difflib.SplitLines(string(rendered)),
@@ -97,11 +94,14 @@ func GlobErrorTests(t *testing.T, root string) {
 				}
 			}()
 
-			testData, err := ioutil.ReadFile(match)
+			testData, err := os.ReadFile(filepath.Clean(match))
+			if err != nil {
+				t.Fatalf("Error on ReadFile('%s'):\n%s", match, err.Error())
+			}
 			tests := strings.Split(string(testData), "\n")
 
 			checkFilename := fmt.Sprintf("%s.out", match)
-			checkData, err := ioutil.ReadFile(checkFilename)
+			checkData, err := os.ReadFile(filepath.Clean(checkFilename))
 			if err != nil {
 				t.Fatalf("Error on ReadFile('%s'):\n%s", checkFilename, err.Error())
 			}
@@ -120,12 +120,12 @@ func GlobErrorTests(t *testing.T, root string) {
 						match, idx+1)
 				}
 
-				tpl, err := env.FromString(test)
+				_, err := env.FromString(test)
 				if err != nil {
 					t.Fatalf("Error on FromString('%s'):\n%s", test, err.Error())
 				}
 
-				tpl, err = env.FromBytes([]byte(test))
+				tpl, err := env.FromBytes([]byte(test))
 				if err != nil {
 					t.Fatalf("Error on FromBytes('%s'):\n%s", test, err.Error())
 				}

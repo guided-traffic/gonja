@@ -3,7 +3,6 @@ package django
 import (
 	"bytes"
 	"fmt"
-	"math/rand"
 	"regexp"
 	"strconv"
 	"strings"
@@ -16,9 +15,7 @@ import (
 	u "github.com/noirbizarre/gonja/utils"
 )
 
-func init() {
-	rand.Seed(time.Now().Unix())
-}
+// rand is automatically seeded in Go 1.20+
 
 var Filters = exec.FilterSet{
 	"escapejs":           filterEscapejs,

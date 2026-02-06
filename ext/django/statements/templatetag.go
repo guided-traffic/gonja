@@ -32,7 +32,7 @@ var templateTagMapping = map[string]string{
 }
 
 func (node *TemplateTagStmt) Execute(r *exec.Renderer, tag *nodes.StatementBlock) error {
-	r.WriteString(node.content)
+	_, _ = r.WriteString(node.content)
 	return nil
 }
 
@@ -57,5 +57,5 @@ func templateTagParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, 
 }
 
 func init() {
-	All.Register("templatetag", templateTagParser)
+	_ = All.Register("templatetag", templateTagParser)
 }

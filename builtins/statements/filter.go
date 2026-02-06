@@ -48,7 +48,7 @@ func (node *FilterStmt) Execute(r *exec.Renderer, tag *nodes.StatementBlock) err
 		}
 	}
 
-	r.WriteString(value.String())
+	_, _ = r.WriteString(value.String())
 
 	return nil
 }
@@ -85,5 +85,5 @@ func filterParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, error
 }
 
 func init() {
-	All.Register("filter", filterParser)
+	_ = All.Register("filter", filterParser)
 }

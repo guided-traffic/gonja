@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"strings"
+	"unicode"
 
 	"github.com/pkg/errors"
 )
@@ -78,7 +79,17 @@ func Lorem(count int, method string) (string, error) {
 	return out.String(), nil
 }
 
+// capitalize returns the string with the first letter uppercased.
+func capitalize(s string) string {
+	for i, r := range s {
+		return string(unicode.ToUpper(r)) + s[i+1:]
+	}
+	return s
+}
+
 func Lipsum(n int, html bool, min int, max int) string {
+	// Use a fixed-seed source for deterministic output
+	lipsumRand := rand.New(rand.NewSource(0)) // #nosec G404 -- deterministic output is intentional for template rendering
 	result := []string{}
 
 	for i := 0; i < n; i++ {
@@ -91,7 +102,7 @@ func Lipsum(n int, html bool, min int, max int) string {
 		// each paragraph contains out of min to max words.
 		for j := min; j < max; j++ {
 			for {
-				word = WORDS[rand.Intn(len(WORDS))]
+				word = WORDS[lipsumRand.Intn(len(WORDS))]
 				if word != last {
 					last = word
 					break
@@ -99,16 +110,16 @@ func Lipsum(n int, html bool, min int, max int) string {
 			}
 
 			if nextCapitalized {
-				word = strings.Title(word)
+				word = capitalize(word)
 				nextCapitalized = false
 			}
 
-			if j-(3+rand.Intn(5)) > lastComma {
+			if j-(3+lipsumRand.Intn(5)) > lastComma {
 				// Add comas
 				lastComma = j
 				lastFullstop += 2
 				word += ","
-			} else if j-(10+rand.Intn(10)) > lastFullstop {
+			} else if j-(10+lipsumRand.Intn(10)) > lastFullstop {
 				// Add end of sentences
 				lastComma, lastFullstop = j, j
 				word += "."

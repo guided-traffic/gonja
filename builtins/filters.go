@@ -9,7 +9,6 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-	"time"
 	"unicode"
 	"unicode/utf8"
 
@@ -19,9 +18,7 @@ import (
 	u "github.com/noirbizarre/gonja/utils"
 )
 
-func init() {
-	rand.Seed(time.Now().Unix())
-}
+// rand is automatically seeded in Go 1.20+
 
 // Filters export all builtin filters
 var Filters = exec.FilterSet{
@@ -106,7 +103,7 @@ func filterAttr(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.V
 }
 
 func filterBatch(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	p := params.Expect(1, []*exec.KwArg{{"fill_with", nil}})
+	p := params.Expect(1, []*exec.KwArg{{Name: "fill_with", Default: nil}})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'batch'"))
 	}
@@ -167,7 +164,7 @@ func filterCenter(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 }
 
 func filterDefault(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	p := params.Expect(1, []*exec.KwArg{{"boolean", false}})
+	p := params.Expect(1, []*exec.KwArg{{Name: "boolean", Default: false}})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'default'"))
 	}
@@ -221,9 +218,9 @@ func sortByValue(in *exec.Value, caseSensitive, reverse bool) [][2]*exec.Value {
 
 func filterDictSort(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
 	p := params.Expect(0, []*exec.KwArg{
-		{"case_sensitive", false},
-		{"by", "key"},
-		{"reverse", false},
+		{Name: "case_sensitive", Default: false},
+		{Name: "by", Default: "key"},
+		{Name: "reverse", Default: false},
 	})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'dictsort'"))
@@ -259,7 +256,7 @@ var (
 )
 
 func filterFileSize(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	p := params.Expect(0, []*exec.KwArg{{"binary", false}})
+	p := params.Expect(0, []*exec.KwArg{{Name: "binary", Default: false}})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'filesizeformat'"))
 	}
@@ -360,9 +357,9 @@ func filterGroupBy(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exe
 
 func filterIndent(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
 	p := params.Expect(0, []*exec.KwArg{
-		{"width", 4},
-		{"first", false},
-		{"blank", false},
+		{Name: "width", Default: 4},
+		{Name: "first", Default: false},
+		{Name: "blank", Default: false},
 	})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'indent'"))
@@ -398,8 +395,8 @@ func filterInteger(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exe
 
 func filterJoin(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
 	p := params.Expect(0, []*exec.KwArg{
-		{"d", ""},
-		{"attribute", nil},
+		{Name: "d", Default: ""},
+		{Name: "attribute", Default: nil},
 	})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'join'"))
@@ -460,9 +457,9 @@ func filterLower(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.
 
 func filterMap(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
 	p := params.Expect(0, []*exec.KwArg{
-		{"filter", ""},
-		{"attribute", nil},
-		{"default", nil},
+		{Name: "filter", Default: ""},
+		{Name: "attribute", Default: nil},
+		{Name: "default", Default: nil},
 	})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'map'"))
@@ -494,8 +491,8 @@ func filterMap(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Va
 
 func filterMax(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
 	p := params.Expect(0, []*exec.KwArg{
-		{"case_sensitive", false},
-		{"attribute", nil},
+		{Name: "case_sensitive", Default: false},
+		{Name: "attribute", Default: nil},
 	})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'max'"))
@@ -546,8 +543,8 @@ func filterMax(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Va
 
 func filterMin(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
 	p := params.Expect(0, []*exec.KwArg{
-		{"case_sensitive", false},
-		{"attribute", nil},
+		{Name: "case_sensitive", Default: false},
+		{Name: "attribute", Default: nil},
 	})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'min'"))
@@ -597,7 +594,7 @@ func filterMin(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Va
 }
 
 func filterPPrint(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	p := params.Expect(0, []*exec.KwArg{{"verbose", false}})
+	p := params.Expect(0, []*exec.KwArg{{Name: "verbose", Default: false}})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'pprint'"))
 	}
@@ -615,7 +612,7 @@ func filterRandom(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 	if !in.CanSlice() || in.Len() <= 0 {
 		return in
 	}
-	i := rand.Intn(in.Len())
+	i := rand.Intn(in.Len()) // #nosec G404 -- template random filter does not require cryptographic randomness
 	return in.Index(i)
 }
 
@@ -703,7 +700,7 @@ func filterRejectAttr(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *
 }
 
 func filterReplace(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	p := params.Expect(2, []*exec.KwArg{{"count", nil}})
+	p := params.Expect(2, []*exec.KwArg{{Name: "count", Default: nil}})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'replace'"))
 	}
@@ -737,7 +734,7 @@ func filterReverse(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exe
 }
 
 func filterRound(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	p := params.Expect(0, []*exec.KwArg{{"precision", 0}, {"method", "common"}})
+	p := params.Expect(0, []*exec.KwArg{{Name: "precision", Default: 0}, {Name: "method", Default: "common"}})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'round'"))
 	}
@@ -882,7 +879,7 @@ func filterSlice(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.
 }
 
 func filterSort(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	p := params.Expect(0, []*exec.KwArg{{"reverse", false}, {"case_sensitive", false}})
+	p := params.Expect(0, []*exec.KwArg{{Name: "reverse", Default: false}, {Name: "case_sensitive", Default: false}})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'sort'"))
 	}
@@ -918,7 +915,7 @@ func filterStriptags(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *e
 }
 
 func filterSum(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	p := params.Expect(0, []*exec.KwArg{{"attribute", nil}, {"start", 0}})
+	p := params.Expect(0, []*exec.KwArg{{Name: "attribute", Default: nil}, {Name: "start", Default: 0}})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'sum'"))
 	}
@@ -960,6 +957,20 @@ func filterSum(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Va
 	return exec.AsValue(sum)
 }
 
+// titleCase converts a string to title case (first letter of each word uppercased).
+// This replaces the deprecated strings.Title.
+func titleCase(s string) string {
+	prev := ' '
+	return strings.Map(func(r rune) rune {
+		if unicode.IsSpace(prev) || unicode.IsPunct(prev) {
+			prev = r
+			return unicode.ToTitle(r)
+		}
+		prev = r
+		return r
+	}, s)
+}
+
 func filterTitle(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
 	if p := params.ExpectNothing(); p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'title'"))
@@ -967,7 +978,7 @@ func filterTitle(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.
 	if !in.IsString() {
 		return exec.AsValue("")
 	}
-	return exec.AsValue(strings.Title(strings.ToLower(in.String())))
+	return exec.AsValue(titleCase(strings.ToLower(in.String())))
 }
 
 func filterTrim(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
@@ -978,7 +989,7 @@ func filterTrim(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.V
 }
 
 func filterToJSON(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	p := params.Expect(0, []*exec.KwArg{{"indent", nil}})
+	p := params.Expect(0, []*exec.KwArg{{Name: "indent", Default: nil}})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'tojson'"))
 	}
@@ -1005,10 +1016,10 @@ func filterToJSON(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec
 
 func filterTruncate(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
 	p := params.Expect(0, []*exec.KwArg{
-		{"length", 255},
-		{"killwords", false},
-		{"end", "..."},
-		{"leeway", 0},
+		{Name: "length", Default: 255},
+		{Name: "killwords", Default: false},
+		{Name: "end", Default: "..."},
+		{Name: "leeway", Default: 0},
 	})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'truncate'"))
@@ -1042,7 +1053,7 @@ func filterTruncate(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *ex
 }
 
 func filterUnique(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	p := params.Expect(0, []*exec.KwArg{{"case_sensitive", false}, {"attribute", nil}})
+	p := params.Expect(0, []*exec.KwArg{{Name: "case_sensitive", Default: false}, {Name: "attribute", Default: nil}})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'unique'"))
 	}
@@ -1161,10 +1172,10 @@ func filterUrlizeHelper(input string, trunc int, rel string, target string) (str
 
 func filterUrlize(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
 	p := params.Expect(0, []*exec.KwArg{
-		{"trim_url_limit", nil},
-		{"nofollow", false},
-		{"target", nil},
-		{"rel", nil},
+		{Name: "trim_url_limit", Default: nil},
+		{Name: "nofollow", Default: false},
+		{Name: "target", Default: nil},
+		{Name: "rel", Default: nil},
 	})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'urlize'"))
@@ -1208,7 +1219,7 @@ func filterWordwrap(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *ex
 }
 
 func filterXMLAttr(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	p := params.ExpectKwArgs([]*exec.KwArg{{"autospace", true}})
+	p := params.ExpectKwArgs([]*exec.KwArg{{Name: "autospace", Default: true}})
 	if p.IsError() {
 		return exec.AsValue(errors.Wrap(p, "Wrong signature for 'xmlattr'"))
 	}

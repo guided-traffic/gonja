@@ -9,16 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var ctxData = map[string]interface{}{
-	"nil":    nil,
-	"string": "Hello World",
-	"int":    42,
-	"float":  42.,
-	"true":   true,
-	"false":  false,
-	"func":   func() {},
-}
-
 var ctxCases = []struct {
 	name     string
 	value    interface{}
