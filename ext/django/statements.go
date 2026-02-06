@@ -1,5 +1,5 @@
 package django
 
-import "github.com/noirbizarre/gonja/ext/django/statements"
+import "github.com/guided-traffic/gonja/ext/django/statements"
 
 var Statements = statements.All

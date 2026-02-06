@@ -11,8 +11,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/noirbizarre/gonja/exec"
-	u "github.com/noirbizarre/gonja/utils"
+	"github.com/guided-traffic/gonja/exec"
+	u "github.com/guided-traffic/gonja/utils"
 )
 
 // rand is automatically seeded in Go 1.20+

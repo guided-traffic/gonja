@@ -3,9 +3,9 @@ package statements
 import (
 	"fmt"
 
-	"github.com/noirbizarre/gonja/nodes"
-	"github.com/noirbizarre/gonja/parser"
-	"github.com/noirbizarre/gonja/tokens"
+	"github.com/guided-traffic/gonja/nodes"
+	"github.com/guided-traffic/gonja/parser"
+	"github.com/guided-traffic/gonja/tokens"
 )
 
 type CommentStmt struct {

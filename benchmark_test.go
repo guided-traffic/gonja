@@ -7,9 +7,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/noirbizarre/gonja"
+	"github.com/guided-traffic/gonja"
 
-	tu "github.com/noirbizarre/gonja/testutils"
+	tu "github.com/guided-traffic/gonja/testutils"
 )
 
 func BenchmarkFromCache(b *testing.B) {

@@ -6,7 +6,7 @@ package gonja_test
 import (
 	"testing"
 
-	tu "github.com/noirbizarre/gonja/testutils"
+	tu "github.com/guided-traffic/gonja/testutils"
 )
 
 func TestTemplates(t *testing.T) {
