@@ -5,14 +5,14 @@
 [![Build Status](https://github.com/guided-traffic/gonja/actions/workflows/release.yml/badge.svg)](https://github.com/guided-traffic/gonja/actions/workflows/release.yml)
 [![Coverage Status](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/guided-traffic/gonja/main/.github/badges/coverage.json)](https://github.com/guided-traffic/gonja)
 
+This gonja repo is a fork of [`gonja`](https://github.com/noirbizarre/gonja) which is unmaintained since 2020. This fork aims to update all dependencies and keep `gonja` compatible with the latest Go versions. Dependencies updates will be maintained by renovate-bot and rolled out every night after successful tests automatically.
+
 `gonja` is [`pongo2`](https://github.com/flosch/pongo2) fork intended to be aligned on `Jinja` template syntax instead of the `Django` one.
 
 Install/update using `go get` (no dependencies required by `gonja`):
 ```
 go get github.com/guided-traffic/gonja
 ```
-
-Please use the [issue tracker](https://github.com/guided-traffic/gonja/issues) if you're encountering any problems with gonja or if you need help with implementing tags or filters ([create a ticket!](https://github.com/guided-traffic/gonja/issues/new)).
 
 ## First impression of a template
 
@@ -59,24 +59,6 @@ Please use the [issue tracker](https://github.com/guided-traffic/gonja/issues) i
 </body>
 </html>
 ```
-
-## Features (and new in gonja)
-
- * Entirely rewritten from the ground-up.
- * [Advanced C-like expressions](https://github.com/guided-traffic/gonja/blob/main/template_tests/expressions.tpl).
- * [Complex function calls within expressions](https://github.com/guided-traffic/gonja/blob/main/template_tests/function_calls_wrapper.tpl).
- * [Easy API to create new filters and tags](https://pkg.go.dev/github.com/guided-traffic/gonja#RegisterFilter) ([including parsing arguments](https://pkg.go.dev/github.com/guided-traffic/gonja#Parser))
- * Additional features:
-    * Macros including importing macros from other files (see [template_tests/macro.tpl](https://github.com/guided-traffic/gonja/blob/main/template_tests/macro.tpl))
-    * [Template sandboxing](https://pkg.go.dev/github.com/guided-traffic/gonja#TemplateSet) ([directory patterns](https://pkg.go.dev/path/filepath#Match), banned tags/filters)
-
-
-## How you can help
-
- * Write [filters](https://github.com/guided-traffic/gonja/blob/main/builtins/filters.go#L3) / [statements](https://github.com/guided-traffic/gonja/blob/main/builtins/statements.go#L4)
- * Write/improve code tests (use the following command to see what tests are missing: `go test -v -cover -covermode=count -coverprofile=cover.out && go tool cover -html=cover.out` or have a look on [gocover.io/github.com/guided-traffic/gonja](http://gocover.io/github.com/guided-traffic/gonja))
- * Write/improve template tests (see the `testData/` directory)
- * Write middleware, libraries and websites using gonja. :-)
 
 # Documentation
 
@@ -146,28 +128,31 @@ func main() {
 
 # Benchmark
 
-The benchmarks have been run on the my machine (`Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz`) using the command:
+All benchmarks are compiling (depends on the benchmark) and executing the `testData/complex.tpl` template using:
 
-    go test -bench . -cpu 1,2,4,8
+    go test -bench . -cpu 1,2,4,8 -tags bench -benchmem
 
-All benchmarks are compiling (depends on the benchmark) and executing the `testData/complex.tpl` template.
+| Benchmark | i7-2600 · ns/op | M1 Ultra · ns/op | Speedup |
+|---|--:|--:|--:|
+| FromCache | 41,259 | 22,693 | 1.8× |
+| FromCache-2 | 42,776 | 19,183 | 2.2× |
+| FromCache-4 | 44,432 | 19,378 | 2.3× |
+| FromCache-8 | — | 19,576 | — |
+| FromFile | 437,755 | 285,804 | 1.5× |
+| FromFile-2 | 472,828 | 316,581 | 1.5× |
+| FromFile-4 | 519,758 | 333,336 | 1.6× |
+| FromFile-8 | — | 351,705 | — |
+| Execute | 41,984 | 23,474 | 1.8× |
+| Execute-2 | 48,546 | 19,488 | 2.5× |
+| Execute-4 | 104,469 | 19,750 | 5.3× |
+| Execute-8 | — | 19,968 | — |
+| CompileAndExecute | 428,425 | 263,730 | 1.6× |
+| CompileAndExecute-2 | 459,058 | 281,432 | 1.6× |
+| CompileAndExecute-4 | 488,519 | 301,848 | 1.6× |
+| CompileAndExecute-8 | — | 309,676 | — |
+| ParallelExecute | 45,262 | 23,520 | 1.9× |
+| ParallelExecute-2 | 23,490 | 13,984 | 1.7× |
+| ParallelExecute-4 | 24,206 | 9,261 | 2.6× |
+| ParallelExecute-8 | — | 15,123 | — |
 
-The results are:
-
-	BenchmarkFromCache             	   30000	     41259 ns/op
-	BenchmarkFromCache-2           	   30000	     42776 ns/op
-	BenchmarkFromCache-4           	   30000	     44432 ns/op
-	BenchmarkFromFile              	    3000	    437755 ns/op
-	BenchmarkFromFile-2            	    3000	    472828 ns/op
-	BenchmarkFromFile-4            	    2000	    519758 ns/op
-	BenchmarkExecute               	   30000	     41984 ns/op
-	BenchmarkExecute-2             	   30000	     48546 ns/op
-	BenchmarkExecute-4             	   20000	    104469 ns/op
-	BenchmarkCompileAndExecute     	    3000	    428425 ns/op
-	BenchmarkCompileAndExecute-2   	    3000	    459058 ns/op
-	BenchmarkCompileAndExecute-4   	    3000	    488519 ns/op
-	BenchmarkParallelExecute       	   30000	     45262 ns/op
-	BenchmarkParallelExecute-2     	  100000	     23490 ns/op
-	BenchmarkParallelExecute-4     	  100000	     24206 ns/op
-
-Benchmarked on August 18th 2019.
+*i7-2600 benchmarked on August 18th 2019 · M1 Ultra benchmarked on February 6th 2026.*
