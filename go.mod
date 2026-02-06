@@ -4,7 +4,7 @@ go 1.25.7
 
 require (
 	github.com/bmuller/arrow v0.0.0-20180318014521-b14bfde8dff2
-	github.com/go-check/check v0.0.0-20180628173108-788fd7840127
+	github.com/go-check/check 10cb98267c6c
 	github.com/goph/emperror v0.17.2
 	github.com/pkg/errors v0.9.1
 	github.com/pmezard/go-difflib v1.0.0
