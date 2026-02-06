@@ -189,7 +189,7 @@
       ],
       "depNameTemplate": "golang",
       "datasourceTemplate": "golang-version",
-      "versioningTemplate": "semver"
+      "versioningTemplate": "semver-coerced"
     }
   ],
   "gomod": {
