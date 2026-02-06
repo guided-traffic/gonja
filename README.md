@@ -1,6 +1,7 @@
 # Gonja
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/guided-traffic/gonja.svg)](https://pkg.go.dev/github.com/guided-traffic/gonja)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/guided-traffic/gonja)](https://github.com/guided-traffic/gonja/blob/main/go.mod)
 [![Build Status](https://github.com/guided-traffic/gonja/actions/workflows/release.yml/badge.svg)](https://github.com/guided-traffic/gonja/actions/workflows/release.yml)
 [![Coverage Status](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/guided-traffic/gonja/main/.github/badges/coverage.json)](https://github.com/guided-traffic/gonja)
 
