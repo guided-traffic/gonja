@@ -76,7 +76,7 @@ test-unit: ## Run unit tests only (no golden-file tests).
 test-unit-coverage: ## Run unit tests with coverage.
 	@echo "Running unit tests with coverage..."
 	@mkdir -p $(COVERAGE_DIR)
-	$(GOTEST) -v -short -coverprofile=$(COVERAGE_DIR)/unit.out -covermode=atomic ./...
+	$(GOTEST) -v -short -coverpkg=./... -coverprofile=$(COVERAGE_DIR)/unit.out -covermode=atomic ./...
 
 .PHONY: test-integration
 test-integration: ## Run integration (golden-file) tests.
@@ -87,7 +87,7 @@ test-integration: ## Run integration (golden-file) tests.
 test-integration-coverage: ## Run integration tests with coverage.
 	@echo "Running integration tests with coverage..."
 	@mkdir -p $(COVERAGE_DIR)
-	$(GOTEST) -v -tags=integration -count=1 -coverprofile=$(COVERAGE_DIR)/integration.out -covermode=atomic ./...
+	$(GOTEST) -v -tags=integration -count=1 -coverpkg=./... -coverprofile=$(COVERAGE_DIR)/integration.out -covermode=atomic ./...
 
 .PHONY: test-all
 test-all: test-unit test-integration ## Run all tests (unit + integration).
@@ -95,7 +95,7 @@ test-all: test-unit test-integration ## Run all tests (unit + integration).
 .PHONY: test-coverage
 test-coverage: ## Run all tests and show coverage report.
 	@mkdir -p $(COVERAGE_DIR)
-	$(GOTEST) -tags=integration -coverprofile=$(COVERAGE_DIR)/cover.out ./...
+	$(GOTEST) -tags=integration -coverpkg=./... -coverprofile=$(COVERAGE_DIR)/cover.out ./...
 	$(GOCMD) tool cover -html=$(COVERAGE_DIR)/cover.out -o $(COVERAGE_DIR)/coverage.html
 	@echo "Coverage report generated at $(COVERAGE_DIR)/coverage.html"
 
@@ -105,7 +105,7 @@ test-coverage: ## Run all tests and show coverage report.
 coverage: ## Generate test coverage report.
 	@echo "Generating coverage report..."
 	@mkdir -p $(COVERAGE_DIR)
-	$(GOTEST) -tags=integration -coverprofile=$(COVERAGE_DIR)/coverage.out ./...
+	$(GOTEST) -tags=integration -coverpkg=./... -coverprofile=$(COVERAGE_DIR)/coverage.out ./...
 	$(GOCMD) tool cover -html=$(COVERAGE_DIR)/coverage.out -o $(COVERAGE_DIR)/coverage.html
 	$(GOCMD) tool cover -func=$(COVERAGE_DIR)/coverage.out > $(COVERAGE_DIR)/coverage.txt
 	@echo "Coverage report generated at $(COVERAGE_DIR)/coverage.html"
@@ -116,7 +116,7 @@ coverage: ## Generate test coverage report.
 coverage-ci: ## Generate CI coverage report.
 	@echo "Generating CI coverage report..."
 	@mkdir -p $(COVERAGE_DIR)
-	$(GOTEST) -tags=integration -coverprofile=$(COVERAGE_DIR)/coverage.out ./...
+	$(GOTEST) -tags=integration -coverpkg=./... -coverprofile=$(COVERAGE_DIR)/coverage.out ./...
 	$(GOCMD) tool cover -func=$(COVERAGE_DIR)/coverage.out > $(COVERAGE_DIR)/coverage.txt
 	@grep "total:" $(COVERAGE_DIR)/coverage.txt
 
