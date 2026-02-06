@@ -36,3 +36,11 @@ tpl-error.out
 *.error
 /profile
 /coverage.out
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build artifacts
+/bin/
+/coverage/

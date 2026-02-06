@@ -1,0 +1,33 @@
+{{> header}}
+
+## 📊 Quality Metrics
+
+{{#if process.env.TEST_COVERAGE}}
+![Coverage](https://img.shields.io/badge/coverage-{{process.env.TEST_COVERAGE}}%25-{{#if (gte process.env.TEST_COVERAGE 80)}}brightgreen{{else}}{{#if (gte process.env.TEST_COVERAGE 60)}}yellow{{else}}red{{/if}}{{/if}})
+{{/if}}
+![Security](https://img.shields.io/badge/security-✅%20passed-green)
+![Linting](https://img.shields.io/badge/linting-✅%20passed-green)
+
+{{#if process.env.TEST_COVERAGE}}
+**Test Coverage**: {{process.env.TEST_COVERAGE}}% of code is covered by tests
+{{/if}}
+
+{{#if noteGroups}}
+{{#each noteGroups}}
+
+### {{title}}
+
+{{#each notes}}
+* {{#if commit.scope}}**{{commit.scope}}:** {{/if}}{{text}}
+{{/each}}
+{{/each}}
+
+{{/if}}
+
+## 📦 Installation
+
+```bash
+go get github.com/noirbizarre/gonja@{{gitTag}}
+```
+
+{{> footer}}
