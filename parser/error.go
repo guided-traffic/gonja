@@ -5,7 +5,7 @@ import (
 	// "fmt"
 	// "os"
 	"github.com/goph/emperror"
-	"github.com/noirbizarre/gonja/tokens"
+	"github.com/guided-traffic/gonja/tokens"
 	"github.com/pkg/errors"
 )
 

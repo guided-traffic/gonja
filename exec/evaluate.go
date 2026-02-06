@@ -7,7 +7,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/noirbizarre/gonja/nodes"
+	"github.com/guided-traffic/gonja/nodes"
 )
 
 var (

@@ -1,4 +1,4 @@
-module github.com/noirbizarre/gonja
+module github.com/guided-traffic/gonja
 
 go 1.25.7
 
