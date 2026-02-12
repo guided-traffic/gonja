@@ -1,6 +1,6 @@
 module github.com/guided-traffic/gonja
 
-go 1.25.7
+go 1.26.0
 
 require (
 	github.com/bmuller/arrow v1.0.4
