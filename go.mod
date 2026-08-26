@@ -7,7 +7,7 @@ require (
 	github.com/goph/emperror v0.17.2
 	github.com/pkg/errors v0.9.1
 	github.com/pmezard/go-difflib v1.0.0
-	github.com/sirupsen/logrus v1.10.1
+	github.com/sirupsen/logrus v1.10.2
 	github.com/stretchr/testify v1.12.1
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c
