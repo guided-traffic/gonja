@@ -356,6 +356,38 @@ jobs:
 
             > Coverage is calculated from unit tests + integration tests combined.
 
+  release-dry-run:
+    name: Semantic Release Dry Run
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "lts/*"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+        run: npm audit signatures
+
+      # Loads the full plugin stack and renders release notes for the PR branch
+      # without publishing anything. Catches release tooling breakage (plugin or
+      # preset incompatibilities) before a dependency PR reaches main.
+      - name: Verify release stack (dry run, nothing is published)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_REF: ${{ github.head_ref }}
+        run: npx semantic-release --dry-run --no-ci --branches "$HEAD_REF"
+
   semantic-release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [gosec, govulncheck, linter, unit-tests, integration-tests, coverage-report]
@@ -395,7 +427,7 @@ jobs:
           node-version: "lts/*"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures

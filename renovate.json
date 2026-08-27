@@ -116,6 +116,13 @@
       ]
     },
     {
+      "description": "conventional-changelog-conventionalcommits >=9 requires conventional-changelog-writer@9, which @semantic-release/release-notes-generator v14 does not ship (it pins writer ^8). Remove this rule once release-notes-generator upgrades its writer dependency.",
+      "matchPackageNames": [
+        "conventional-changelog-conventionalcommits"
+      ],
+      "allowedVersions": "<9"
+    },
+    {
       "description": "npm (semantic-release): automerge minor and patch updates",
       "matchManagers": [
         "npm"
