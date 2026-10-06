@@ -130,9 +130,7 @@ jobs:
         run: go mod download
 
       - name: Run linting
-        run: |
-          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-          make lint
+        run: make lint
 
   coverage-report:
     name: Combined Coverage Report

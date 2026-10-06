@@ -40,7 +40,7 @@ func (stmt *NowStmt) String() string {
 func (stmt *NowStmt) Execute(r *exec.Renderer, tag *nodes.StatementBlock) error {
 	var now arrow.Arrow
 
-	cfg := r.Config.Ext["time"].(*Config)
+	cfg := r.Ext["time"].(*Config)
 	format := cfg.DatetimeFormat
 
 	if cfg.Now != nil {

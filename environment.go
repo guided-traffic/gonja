@@ -59,7 +59,7 @@ func (env *Environment) CleanCache(filenames ...string) {
 // FromCache() will not cache the template and instead recompile it on any
 // call (to make changes to a template live instantaneously).
 func (env *Environment) FromCache(filename string) (*exec.Template, error) {
-	if env.Config.Debug {
+	if env.Debug {
 		// Recompile on any request
 		return env.FromFile(filename)
 	}

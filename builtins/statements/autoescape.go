@@ -45,11 +45,12 @@ func autoescapeParser(p *parser.Parser, args *parser.Parser) (nodes.Statement, e
 	if modeToken == nil {
 		return nil, args.Error("A mode is required for autoescape statement.", nil)
 	}
-	if modeToken.Val == "true" {
+	switch modeToken.Val {
+	case "true":
 		stmt.Autoescape = true
-	} else if modeToken.Val == "false" {
+	case "false":
 		stmt.Autoescape = false
-	} else {
+	default:
 		return nil, args.Error("Only 'true' or 'false' is valid as an autoescape statement.", nil)
 	}
 

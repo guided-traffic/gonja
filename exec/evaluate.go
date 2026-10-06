@@ -423,7 +423,7 @@ func (e *Evaluator) evalParams(node *nodes.Call, fn *Value) ([]reflect.Value, er
 	args := node.Args
 	t := fn.Val.Type()
 
-	if len(args) != t.NumIn() && !(len(args) >= t.NumIn()-1 && t.IsVariadic()) {
+	if len(args) != t.NumIn() && (len(args) < t.NumIn()-1 || !t.IsVariadic()) {
 		msg := "Function input argument count (%d) of '%s' must be equal to the calling argument count (%d)."
 		return nil, errors.Errorf(msg, t.NumIn(), node.String(), len(args))
 	}

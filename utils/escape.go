@@ -3,10 +3,10 @@ package utils
 import "strings"
 
 func Escape(in string) string {
-	output := strings.Replace(in, "&", "&amp;", -1)
-	output = strings.Replace(output, ">", "&gt;", -1)
-	output = strings.Replace(output, "<", "&lt;", -1)
-	output = strings.Replace(output, "\"", "&quot;", -1)
-	output = strings.Replace(output, "'", "&#39;", -1)
+	output := strings.ReplaceAll(in, "&", "&amp;")
+	output = strings.ReplaceAll(output, ">", "&gt;")
+	output = strings.ReplaceAll(output, "<", "&lt;")
+	output = strings.ReplaceAll(output, "\"", "&quot;")
+	output = strings.ReplaceAll(output, "'", "&#39;")
 	return output
 }

@@ -47,7 +47,7 @@ func testCallable(ctx *exec.Context, in *exec.Value, params *exec.VarArgs) (bool
 }
 
 func testDefined(ctx *exec.Context, in *exec.Value, params *exec.VarArgs) (bool, error) {
-	return !(in.IsError() || in.IsNil()), nil
+	return !in.IsError() && !in.IsNil(), nil
 }
 
 func testDivisibleby(ctx *exec.Context, in *exec.Value, params *exec.VarArgs) (bool, error) {
@@ -154,7 +154,7 @@ func testSameas(ctx *exec.Context, in *exec.Value, params *exec.VarArgs) (bool, 
 	paramVal := reflect.Indirect(param.Val)
 	// For reference types, compare pointer identity
 	switch inVal.Kind() {
-	case reflect.Map, reflect.Slice, reflect.Chan, reflect.Func, reflect.Ptr, reflect.UnsafePointer:
+	case reflect.Map, reflect.Slice, reflect.Chan, reflect.Func, reflect.Pointer, reflect.UnsafePointer:
 		if paramVal.Kind() == inVal.Kind() {
 			return inVal.Pointer() == paramVal.Pointer(), nil
 		}

@@ -1145,7 +1145,7 @@ func filterUrlizeHelper(input string, trunc int, rel string, target string) (str
 		}
 
 		rels := []string{}
-		cleanedRel := strings.Trim(strings.Replace(rel, "noopener", "", -1), " ")
+		cleanedRel := strings.Trim(strings.ReplaceAll(rel, "noopener", ""), " ")
 		if len(cleanedRel) > 0 {
 			rels = append(rels, cleanedRel)
 		}

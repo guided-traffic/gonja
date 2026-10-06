@@ -62,7 +62,7 @@ func (va *VarArgs) Expect(args int, kwargs []*KwArg) *ReducedVarArgs {
 	} else if len(va.Args) > args {
 		reduced.Args = va.Args[:args]
 		for idx, arg := range va.Args[args:] {
-			if len(kwargs) > idx {
+			if idx < len(kwargs) {
 				reduced.KwArgs[kwargs[idx].Name] = arg
 				reduceIdx = idx + 1
 			} else {

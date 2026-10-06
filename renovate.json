@@ -198,6 +198,16 @@
       "depNameTemplate": "golang",
       "datasourceTemplate": "golang-version",
       "versioningTemplate": "semver-coerced"
+    },
+    {
+      "description": "Update pinned Go tool versions (golangci-lint, gosec, gocyclo) in Makefile",
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^Makefile$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n[A-Z_]+_VERSION \\?= (?<currentValue>\\S+)"
+      ]
     }
   ],
   "gomod": {

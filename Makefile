@@ -42,7 +42,7 @@ lint: ## Run linting.
 	@echo "Running static analysis..."
 	go vet ./...
 	$(GOFMT) -l .
-	@which golangci-lint > /dev/null || (echo "Installing golangci-lint..." && go install github.com/golangci/golangci-lint/cmd/golangci-lint@$(GOLANGCI_LINT_VERSION))
+	@which golangci-lint > /dev/null || (echo "Installing golangci-lint..." && go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@$(GOLANGCI_LINT_VERSION))
 	golangci-lint run --timeout=5m
 
 .PHONY: lint-fix
@@ -172,9 +172,12 @@ $(LOCALBIN):
 GOLANGCI_LINT ?= $(LOCALBIN)/golangci-lint
 
 ## Tool Versions
-GOLANGCI_LINT_VERSION ?= v1.55.2
+# renovate: datasource=go depName=github.com/golangci/golangci-lint/v2
+GOLANGCI_LINT_VERSION ?= v2.14.0
+# renovate: datasource=go depName=github.com/fzipp/gocyclo
 GOCYCLO_VERSION ?= v0.6.0
-GOSEC_VERSION ?= v2.22.0
+# renovate: datasource=go depName=github.com/securego/gosec/v2
+GOSEC_VERSION ?= v2.29.0
 
 # Cyclomatic complexity threshold (recommended: 10-15)
 CYCLO_THRESHOLD ?= 15
@@ -182,7 +185,7 @@ CYCLO_THRESHOLD ?= 15
 .PHONY: golangci-lint
 golangci-lint: $(GOLANGCI_LINT) ## Download golangci-lint locally if necessary.
 $(GOLANGCI_LINT): $(LOCALBIN)
-	$(call go-install-tool,$(GOLANGCI_LINT),github.com/golangci/golangci-lint/cmd/golangci-lint,$(GOLANGCI_LINT_VERSION))
+	$(call go-install-tool,$(GOLANGCI_LINT),github.com/golangci/golangci-lint/v2/cmd/golangci-lint,$(GOLANGCI_LINT_VERSION))
 
 # go-install-tool will 'go install' any package with custom target and target path
 define go-install-tool
