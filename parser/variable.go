@@ -51,7 +51,7 @@ func (p *Parser) parseString() (nodes.Expression, error) {
 		return nil, p.Error("Expected a string", t)
 	}
 	str := strconv.Quote(t.Val)
-	replaced := strings.Replace(str, `\\`, "\\", -1)
+	replaced := strings.ReplaceAll(str, `\\`, "\\")
 	newstr, err := strconv.Unquote(replaced)
 	if err != nil {
 		return nil, p.Error(err.Error(), t)

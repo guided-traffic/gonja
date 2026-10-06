@@ -551,7 +551,7 @@ var testCases = []struct {
 // }
 
 func _deref(value reflect.Value) reflect.Value {
-	for (value.Kind() == reflect.Interface || value.Kind() == reflect.Ptr) && !value.IsNil() {
+	for (value.Kind() == reflect.Interface || value.Kind() == reflect.Pointer) && !value.IsNil() {
 		value = value.Elem()
 	}
 	return value

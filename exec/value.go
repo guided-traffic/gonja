@@ -46,7 +46,7 @@ func ValueError(err error) *Value {
 }
 
 func (v *Value) getResolvedValue() reflect.Value {
-	if v.Val.IsValid() && v.Val.Kind() == reflect.Ptr {
+	if v.Val.IsValid() && v.Val.Kind() == reflect.Pointer {
 		return v.Val.Elem()
 	}
 	return v.Val
@@ -176,7 +176,7 @@ func (v *Value) String() string {
 			}
 			item := ToValue(v.Index(i).Val)
 			if item.IsString() {
-				out.WriteString(fmt.Sprintf(`'%s'`, item.String()))
+				fmt.Fprintf(&out, `'%s'`, item.String())
 			} else {
 				out.WriteString(item.String())
 			}
@@ -763,7 +763,7 @@ func (v *Value) Getattr(name string) (*Value, bool) {
 	if val.IsValid() {
 		return ToValue(val), true
 	}
-	if v.Val.Kind() == reflect.Ptr {
+	if v.Val.Kind() == reflect.Pointer {
 		val = v.Val.Elem()
 		if !val.IsValid() {
 			// Value is not valid (anymore)
@@ -788,7 +788,7 @@ func (v *Value) Getitem(key interface{}) (*Value, bool) {
 		return AsValue(errors.New(`Can't use Getitem on None`)), false
 	}
 	var val reflect.Value
-	if v.Val.Kind() == reflect.Ptr {
+	if v.Val.Kind() == reflect.Pointer {
 		val = v.Val.Elem()
 		if !val.IsValid() {
 			// Value is not valid (anymore)
@@ -848,7 +848,7 @@ func (v *Value) Set(key string, value interface{}) error {
 		return errors.New(`Can't set attribute or item on None`)
 	}
 	val := v.Val
-	for val.Kind() == reflect.Ptr {
+	for val.Kind() == reflect.Pointer {
 		val = val.Elem()
 		if !val.IsValid() {
 			// Value is not valid (anymore)

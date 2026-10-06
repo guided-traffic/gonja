@@ -15,7 +15,7 @@ permissions:
   issues: write
 
 env:
-  GO_VERSION: '1.26.6'
+  GO_VERSION: '1.27.1'
 
 jobs:
   unit-tests:
@@ -130,9 +130,7 @@ jobs:
         run: go mod download
 
       - name: Run linting
-        run: |
-          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-          make lint
+        run: make lint
 
   coverage-report:
     name: Combined Coverage Report

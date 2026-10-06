@@ -162,7 +162,7 @@ func filterTruncateHTMLHelper(value string, newOutput *bytes.Buffer, cond func()
 	for i := len(tagStack) - 1; i >= 0; i-- {
 		tag := tagStack[i]
 		// Close everything from the regular tag stack
-		newOutput.WriteString(fmt.Sprintf("</%s>", tag))
+		fmt.Fprintf(newOutput, "</%s>", tag)
 	}
 }
 
@@ -284,11 +284,11 @@ func filterEscapejs(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *ex
 			if idx+1 < len(sin) {
 				switch sin[idx+1] {
 				case 'r':
-					b.WriteString(fmt.Sprintf(`\u%04X`, '\r'))
+					fmt.Fprintf(&b, `\u%04X`, '\r')
 					idx += 2
 					continue
 				case 'n':
-					b.WriteString(fmt.Sprintf(`\u%04X`, '\n'))
+					fmt.Fprintf(&b, `\u%04X`, '\n')
 					idx += 2
 					continue
 					/*case '\'':
@@ -306,7 +306,7 @@ func filterEscapejs(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *ex
 		if (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' ' || c == '/' {
 			b.WriteRune(c)
 		} else {
-			b.WriteString(fmt.Sprintf(`\u%04X`, c))
+			fmt.Fprintf(&b, `\u%04X`, c)
 		}
 
 		idx += size
@@ -329,14 +329,14 @@ func filterAdd(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Va
 }
 
 func filterAddslashes(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	output := strings.Replace(in.String(), "\\", "\\\\", -1)
-	output = strings.Replace(output, "\"", "\\\"", -1)
-	output = strings.Replace(output, "'", "\\'", -1)
+	output := strings.ReplaceAll(in.String(), "\\", "\\\\")
+	output = strings.ReplaceAll(output, "\"", "\\\"")
+	output = strings.ReplaceAll(output, "'", "\\'")
 	return exec.AsValue(output)
 }
 
 func filterCut(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	return exec.AsValue(strings.Replace(in.String(), params.Args[0].String(), "", -1))
+	return exec.AsValue(strings.ReplaceAll(in.String(), params.Args[0].String(), ""))
 }
 
 func filterLengthis(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
@@ -483,7 +483,7 @@ func filterSplit(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.
 }
 
 func filterLinebreaksbr(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
-	return exec.AsValue(strings.Replace(in.String(), "\n", "<br />", -1))
+	return exec.AsValue(strings.ReplaceAll(in.String(), "\n", "<br />"))
 }
 
 func filterLinenumbers(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
@@ -517,8 +517,8 @@ var filterPhone2numericMap = map[string]string{
 func filterPhone2numeric(e *exec.Evaluator, in *exec.Value, params *exec.VarArgs) *exec.Value {
 	sin := in.String()
 	for k, v := range filterPhone2numericMap {
-		sin = strings.Replace(sin, k, v, -1)
-		sin = strings.Replace(sin, strings.ToUpper(k), v, -1)
+		sin = strings.ReplaceAll(sin, k, v)
+		sin = strings.ReplaceAll(sin, strings.ToUpper(k), v)
 	}
 	return exec.AsValue(sin)
 }

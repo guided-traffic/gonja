@@ -74,7 +74,7 @@ func (r *Renderer) Flush(lstrip bool) {
 
 func (r *Renderer) FlushAndTrim(trim, lstrip bool) {
 	txt := r.Trim.Buffer.String()
-	if r.Config.LstripBlocks && !lstrip {
+	if r.LstripBlocks && !lstrip {
 		lines := strings.Split(txt, "\n")
 		last := lines[len(lines)-1]
 		lines[len(lines)-1] = strings.TrimLeft(last, " \t")
@@ -89,7 +89,7 @@ func (r *Renderer) FlushAndTrim(trim, lstrip bool) {
 
 // WriteString wraps the triming policy
 func (r *Renderer) WriteString(txt string) (int, error) {
-	if r.Config.TrimBlocks {
+	if r.TrimBlocks {
 		txt = strings.TrimLeftFunc(txt, r.Trim.TrimBlocks)
 	}
 	if r.Trim.Should {
@@ -151,7 +151,7 @@ func (r *Renderer) Visit(node nodes.Node) (nodes.Visitor, error) {
 		return nil, nil
 	case *nodes.StatementBlock:
 		r.Tag(n.Trim, n.LStrip)
-		r.Trim.ShouldBlock = r.Config.TrimBlocks
+		r.Trim.ShouldBlock = r.TrimBlocks
 		stmt, ok := n.Stmt.(Statement)
 		if ok {
 			// Silently ignore non executable statements
@@ -172,7 +172,7 @@ func (r *Renderer) ExecuteWrapper(wrapper *nodes.Wrapper) error {
 	sub := r.Inherit()
 	err := nodes.Walk(sub, wrapper)
 	sub.Tag(wrapper.Trim, wrapper.LStrip)
-	r.Trim.ShouldBlock = r.Config.TrimBlocks
+	r.Trim.ShouldBlock = r.TrimBlocks
 	return err
 }
 
@@ -196,7 +196,7 @@ func (r *Renderer) Execute() error {
 func (r *Renderer) String() string {
 	r.Flush(false)
 	out := r.Out.String()
-	if !r.Config.KeepTrailingNewline {
+	if !r.KeepTrailingNewline {
 		out = strings.TrimSuffix(out, "\n")
 	}
 	return out
