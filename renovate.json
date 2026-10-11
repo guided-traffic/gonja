@@ -90,6 +90,37 @@
       ]
     },
     {
+      "description": "Tools module: golang.org/x/tools is an '// indirect' line in tools/go.mod and therefore disabled by default. Enable it so gosec keeps an export-data importer that can read new Go releases, independent of gosec's own x/tools pin. All other indirect lines there stay disabled.",
+      "matchManagers": [
+        "gomod"
+      ],
+      "matchFileNames": [
+        "tools/go.mod"
+      ],
+      "matchPackageNames": [
+        "golang.org/x/tools"
+      ],
+      "enabled": true
+    },
+    {
+      "description": "Tools module: automerge minor and patch updates of gosec (tool directive) and golang.org/x/tools after CI passes; 'make gosec' builds from tools/go.mod, so a broken tool update fails the GoSec job",
+      "matchManagers": [
+        "gomod"
+      ],
+      "matchFileNames": [
+        "tools/go.mod"
+      ],
+      "matchPackageNames": [
+        "github.com/securego/gosec/v2",
+        "golang.org/x/tools"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true
+    },
+    {
       "description": "GitHub Actions: automerge minor and patch updates",
       "matchManagers": [
         "github-actions"
@@ -200,7 +231,7 @@
       "versioningTemplate": "semver-coerced"
     },
     {
-      "description": "Update pinned Go tool versions (golangci-lint, gosec, gocyclo) in Makefile",
+      "description": "Update pinned Go tool versions (golangci-lint, gocyclo) in Makefile; gosec is pinned in tools/go.mod",
       "customType": "regex",
       "managerFilePatterns": [
         "/^Makefile$/"

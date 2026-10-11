@@ -149,11 +149,14 @@ coverage-json: ## Generate coverage badge JSON for shields.io.
 
 ##@ Security
 
+# gosec is built from tools/go.mod, not via 'go install ...@version': the tools
+# module raises golang.org/x/tools above gosec's own pin, so gosec can read the
+# export data of new Go releases before gosec itself ships an update.
 .PHONY: gosec
-gosec: ## Run gosec security scan.
+gosec: $(LOCALBIN) ## Run gosec security scan.
 	@echo "Running gosec security scan..."
-	@which gosec > /dev/null || (echo "Installing gosec..." && go install github.com/securego/gosec/v2/cmd/gosec@$(GOSEC_VERSION))
-	GOFLAGS="-buildvcs=false" gosec ./...
+	$(GOCMD) build -C tools -o $(GOSEC) github.com/securego/gosec/v2/cmd/gosec
+	GOFLAGS="-buildvcs=false" $(GOSEC) ./...
 
 .PHONY: vuln
 vuln: ## Check for vulnerabilities.
@@ -170,14 +173,13 @@ $(LOCALBIN):
 
 ## Tool Binaries
 GOLANGCI_LINT ?= $(LOCALBIN)/golangci-lint
+GOSEC ?= $(LOCALBIN)/gosec
 
-## Tool Versions
+## Tool Versions (gosec: see tools/go.mod)
 # renovate: datasource=go depName=github.com/golangci/golangci-lint/v2
 GOLANGCI_LINT_VERSION ?= v2.14.0
 # renovate: datasource=go depName=github.com/fzipp/gocyclo
 GOCYCLO_VERSION ?= v0.6.0
-# renovate: datasource=go depName=github.com/securego/gosec/v2
-GOSEC_VERSION ?= v2.29.0
 
 # Cyclomatic complexity threshold (recommended: 10-15)
 CYCLO_THRESHOLD ?= 15
