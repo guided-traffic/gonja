@@ -177,7 +177,7 @@ GOSEC ?= $(LOCALBIN)/gosec
 
 ## Tool Versions (gosec: see tools/go.mod)
 # renovate: datasource=go depName=github.com/golangci/golangci-lint/v2
-GOLANGCI_LINT_VERSION ?= v2.14.0
+GOLANGCI_LINT_VERSION ?= v2.15.0
 # renovate: datasource=go depName=github.com/fzipp/gocyclo
 GOCYCLO_VERSION ?= v0.6.0
 
